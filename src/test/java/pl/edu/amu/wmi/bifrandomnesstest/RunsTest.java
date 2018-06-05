@@ -15,33 +15,33 @@ import static pl.edu.amu.wmi.bifrandomnesstest.helper.RandomnessTestHelper.asser
  */
 public class RunsTest {
 
-    @Test
-    public void shouldTestRuns(RandomAdapter adapter) {
+    private static final int RUNS_ACCEPTABLE_DIFFERENCE = 2;
+
+    private void shouldTestRuns(RandomAdapter adapter) {
         CountResult overallResult = new CountResult();
         char previousChar = 'a';
-        String s = RandomnessTestHelper.genConcatRandNumString(adapter);
-        CountResult result = new CountResult();
+        String s = RandomnessTestHelper.genConcatRandNumString(adapter, 4);
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (c != previousChar) {
                 previousChar = c;
                 if (c == '1') {
-                    ++result.oneCount;
+                    ++overallResult.oneCount;
                 } else {
-                    ++result.zeroCount;
+                    ++overallResult.zeroCount;
                 }
             }
         }
-        assertCountResult(overallResult);
+        assertCountResult(overallResult, RUNS_ACCEPTABLE_DIFFERENCE);
     }
 
     @Test
-    public void shouldTestLCGFrequencyMonobit() {
+    public void shouldTestLCGFrequencyBinary() {
         shouldTestRuns(new LCG());
     }
 
     @Test
-    public void shouldTestMTrequencyMonobit() {
+    public void shouldTestMTrequencyBinary() {
         shouldTestRuns(new MTRandom());
     }
 }
